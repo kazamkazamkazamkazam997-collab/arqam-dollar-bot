@@ -2,7 +2,7 @@ import sqlite3
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import ApplicationBuilder, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ContextTypes
 
-# 1. إعداد قاعدة البيانات (يتم إنشاؤها مرة واحدة)
+# 1. إعداد قاعدة البيانات
 def init_db():
     conn = sqlite3.connect('database.db')
     cursor = conn.cursor()
@@ -10,7 +10,7 @@ def init_db():
     conn.commit()
     conn.close()
 
-# 2. القائمة الرئيسية (الأزرار بالعرض وملونة)
+# 2. القائمة الرئيسية
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
         [InlineKeyboardButton("🔵 شراء رقم", callback_data='buy'), InlineKeyboardButton("🔴 رصيدي", callback_data='balance')],
@@ -20,7 +20,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("👋 أهلاً بك في بوت الأرقام، اختر خياراً:", reply_markup=reply_markup)
 
-# 3. معالج الأزرار (هنا سنضع منطق البيع لاحقاً)
+# 3. معالج الأزرار
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -29,12 +29,12 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await query.edit_message_text(f"تم اختيار: {query.data} (قيد التطوير)")
 
-# 4. معالج رفع الملفات (جاهز لاستقبال ملفات الأرقام)
+# 4. معالج رفع الملفات
 async def handle_document(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("📂 تم استلام الملف! (سأقوم ببرمجة حفظ الأرقام هنا لاحقاً).")
 
 if name == 'main':
-    init_db() # تشغيل قاعدة البيانات
+    init_db()
     TOKEN = "8886502478:AAFC-DJauBuaj3n-pRcfQ7qTE6sCuIfMRko"
     app = ApplicationBuilder().token(TOKEN).build()
     
